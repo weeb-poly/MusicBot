@@ -1231,6 +1231,13 @@ class MusicBot(discord.Client):
             usr = user_mentions[0]
             return Response(self.str.get('cmd-id-other', '**{0}**s ID is `{1}`').format(usr.name, usr.id), reply=True, delete_after=35)
 
+    async def cmd_about(self, author, user_mentions):
+        """
+        Usage:
+            {comamnd_prefix}about
+        """
+        return Response(self.str.get('cmd-about'), reply=True, delete_after=35, image="https://bluebluewave.files.wordpress.com/2011/11/t_win7_theme_07.png")
+
     async def cmd_save(self, player, url=None):
         """
         Usage:
@@ -2816,6 +2823,8 @@ class MusicBot(discord.Client):
                     content = self._gen_embed()
                     content.title = command
                     content.description = response.content
+                    if response.image is not None:
+                        content.set_image(url=response.image)
                 else:
                     content = response.content
 

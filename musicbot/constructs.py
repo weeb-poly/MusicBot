@@ -6,6 +6,8 @@ import logging
 import discord
 
 from enum import Enum
+
+from discord.embeds import Embed
 from .utils import objdiff, _get_variable
 
 log = logging.getLogger(__name__)
@@ -38,14 +40,15 @@ class SkipState:
 
 
 class Response:
-    __slots__ = ['_content', 'reply', 'delete_after', 'codeblock', '_codeblock']
+    __slots__ = ['_content', 'reply', 'delete_after', 'codeblock', '_codeblock', 'image']
 
-    def __init__(self, content, reply=False, delete_after=0, codeblock=None):
+    def __init__(self, content, reply=False, delete_after=0, codeblock=None, image=None):
         self._content = content
         self.reply = reply
         self.delete_after = delete_after
         self.codeblock = codeblock
         self._codeblock = "```{!s}\n{{}}\n```".format('' if codeblock is True else codeblock)
+        self.image = image
 
     @property
     def content(self):
