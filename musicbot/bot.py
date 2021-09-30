@@ -2780,10 +2780,17 @@ class MusicBot(discord.Client):
                 else:
                     prog_bar_str += "■"
 
-            action_text = (
-                self.str.get("cmd-np-action-streaming", "Streaming")
-                if streaming
-                else self.str.get("cmd-np-action-playing", "Playing")
+            action_text = ""
+
+            if player.loopqueue:
+                action_text = self.str.get("cmd-np-action-looping", "Looping")
+            elif player.repeatsong:
+                action_text = self.str.get("cmd-np-action-repeating", "Repeating")
+            else: 
+                action_text = (
+                    self.str.get("cmd-np-action-streaming", "Streaming")
+                    if streaming
+                    else self.str.get("cmd-np-action-playing", "Playing")
             )
 
             if player.current_entry.meta.get(
