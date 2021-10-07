@@ -182,3 +182,10 @@ def format_song_duration(ftd):
         if int(duration_array[0]) > 0
         else "{0}:{1}".format(duration_array[1], duration_array[2])
     )
+
+def ordinal_number(n):
+    n = int(n)
+    suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
+    if 11 <= (n % 100) <= 13:
+        suffix = 'th'
+    return str(n) + suffix

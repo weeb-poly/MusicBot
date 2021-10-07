@@ -43,6 +43,7 @@ from .utils import (
     _func_,
     _get_variable,
     format_song_duration,
+    ordinal_number
 )
 from .spotify import Spotify
 from .json import Json
@@ -590,20 +591,22 @@ class MusicBot(discord.Client):
             elif self.config.now_playing_mentions:
                 newmsg = self.str.get(
                     "on_player_play-onChannel_playingMention",
-                    "{author} - your song {title} is now playing in {channel}!",
+                    "{author} - your song {title} is now playing in {channel}{loopstring}!",
                 ).format(
                     author=entry.meta["author"].mention,
                     title=entry.title,
                     channel=player.voice_client.channel.name,
+                    loopstring=f" for the {ordinal_number(player.repeat_counter)} time" if player.repeatsong else "",
                 )
             else:
                 newmsg = self.str.get(
                     "on_player_play-onChannel",
-                    "Now playing in {channel}: {title} added by {author}!",
+                    "Now playing in {channel}: {title} added by {author}{loopstring}!",
                 ).format(
                     channel=player.voice_client.channel.name,
                     title=entry.title,
                     author=entry.meta["author"].name,
+                    loopstring=f" for the {ordinal_number(player.repeat_counter)} time" if player.repeatsong else "",
                 )
         else:
             # no author (and channel), it's an autoplaylist (or autostream from my other PR) entry.
@@ -3427,16 +3430,29 @@ class MusicBot(discord.Client):
             if player.current_entry.meta.get(
                 "channel", False
             ) and player.current_entry.meta.get("author", False):
-                lines.append(
-                    self.str.get(
-                        "cmd-queue-playing-author",
-                        "Currently playing: `{0}` added by `{1}` {2}\n",
-                    ).format(
-                        player.current_entry.title,
-                        player.current_entry.meta["author"].name,
-                        prog_str,
+                if not player.repeatsong:
+                    lines.append(
+                        self.str.get(
+                            "cmd-queue-playing-author",
+                            "Currently playing: `{0}` added by `{1}` {2}\n",
+                        ).format(
+                            player.current_entry.title,
+                            player.current_entry.meta["author"].name,
+                            prog_str,
+                        )
                     )
-                )
+                else:
+                    lines.append(
+                        self.str.get(
+                            "cmd-queue-looping-author",
+                            "Currently looping: `{0}` added by `{1}` for the `{2}` time `{3}\n"
+                        ).format(
+                            player.current_entry.title,
+                            player.current_entry.meta["author"].name,
+                            ordinal_number(player.repeat_counter),
+                            prog_str
+                        )
+                    )     
             else:
                 lines.append(
                     self.str.get(

@@ -125,6 +125,7 @@ class MusicPlayer(EventEmitter, Serializable):
         self.loop = bot.loop
         self.loopqueue = False
         self.repeatsong = False
+        self.repeat_counter = 1
         self.voice_client = voice_client
         self.playlist = playlist
         self.autoplaylist = None
@@ -207,8 +208,11 @@ class MusicPlayer(EventEmitter, Serializable):
 
         if self.repeatsong:
             self.playlist.entries.appendleft(entry)
+            self.repeat_counter += 1
         elif self.loopqueue:
             self.playlist.entries.append(entry)
+        else:
+            self.repeat_counter = 1
         
         if self._current_player:
             self._current_player.after = None
