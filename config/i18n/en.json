@@ -104,6 +104,7 @@
     "cmd-option-invalid-param": "The parameters provided were invalid.",
     "cmd-queue-more": "\n... and %s more",
     "cmd-queue-none": "There are no songs queued! Queue something with {}play.",
+    "cmd-queue-looping-author": "Currently looping: `{0}` added by `{1}` for the `{2}` time `{3}`\n",
     "cmd-queue-playing-author": "Currently playing: `{0}` added by `{1}` {2}\n",
     "cmd-queue-playing-noauthor": "Currently playing: `{0}` {1}\n",
     "cmd-queue-entry-author": "{0} -- `{1}` by `{2}`",
